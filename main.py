@@ -1,15 +1,17 @@
 import numpy as np
+from spiral import spiral
 
 
 ## Parâmetros para criar uma lista de numeros.
 start = 5
 step = 5
 num = 2
-##
+
 
 L = np.arange(0,num)*step+start
 W = 5
 n = '\n'
+
 
 ## Gerador de Estruturas e dos arquivos pdb e data.
 for i in range(len(L)):
@@ -18,6 +20,7 @@ for i in range(len(L)):
         pathname = '/Users/kyoun/IC/estruturas/'
         filename = pathname+filemask
         f = open(filename,'x')
+        path = spiral(L[j])
         f.write(f'set fname {W}x{L[j]}.pdb {n}'
                 f'set fdata {W}x{L[j]}.full {n}'
                 f'set my_lx {W} {n}'
@@ -26,10 +29,12 @@ for i in range(len(L)):
                 f'set sel [atomselect top all] {n}'
                 f'$sel move [transaxis x 90] {n}'
                 f'$sel move [transaxis z 90] {n}'
+                f'source /Users/kyoun/IC/sculptor.tcl {n}'
+                f'::Sculptor::sculpt \"{path}\" {n}'
                 f'topo writelammpsdata /Users/kyoun/IC/estruturas/data/$fdata full {n}'
                 f'$sel writepdb /Users/kyoun/IC/estruturas/pdb/$fname {n}')
     W += 5
-##
+
 
 ## Gerador do arquivo texto de source vmd
 W = 5
@@ -41,5 +46,4 @@ for i in range(len(L)):
     for j in range(len(L)):
         f.write(f'source {W}x{L[j]}.tcl {n}')
     W += 5
-##
 
