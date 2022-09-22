@@ -32,6 +32,7 @@ for i in range(len(L)):
 ##
 
 ## Gerador do arquivo texto de source vmd
+W = 0
 filemask = f'source.txt'
 pathname = '/Users/kyoun/IC/estruturas/'
 filename = pathname+filemask
