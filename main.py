@@ -35,7 +35,7 @@ for i in range(len(L)):
                 f'topo guessdihedrals {n}'
                 f'topo guessimpropers {n}'
                 f'mol reanalyze top {n}'
-                f'set box {{{2*L[j]} {2*L[j]} {2*L[j]} 90 90 90}} {n}'
+                f'set box {{ {2*L[j]} {2*L[j]} {2*L[j]} 90 90 90}} {n}'
                 f'pbc set $box {n}'
                 f'set center [measure center $sel weight none] {n}'
                 f'$sel moveby [vecscale -1.0 $center] {n}'
