@@ -21,7 +21,6 @@ for i in range(len(L)):
         filename = pathname+filemask
         f = open(filename,'x')
         path = spiral(L[j])
-        print(len(path))
         f.write(f'set fname {W}x{L[j]}.pdb {n}'
                 f'set fdata {W}x{L[j]}.full {n}'
                 f'set my_lx {W} {n}'
