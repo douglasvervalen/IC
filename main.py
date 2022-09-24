@@ -32,6 +32,6 @@ filename = pathname+filemask
 f = open(filename,'x')
 for i in range(len(L)):
     for j in range(len(L)):
-        text = souce(L, W, j)
+        text = source(L, W, j)
         f.write(text)
     W += 5
