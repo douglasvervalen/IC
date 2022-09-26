@@ -17,10 +17,10 @@ def gen_membrane(L, W, path, j):
     f'mol reanalyze top {n}'
     f'set box {{{2 * L[j]} {2 * L[j]} {2 * L[j]} 90 90 90}} {n}'
     f'pbc set $box {n}'
-    f'set center [measure center $sel weight none] {n}'
-    f'$sel moveby [vecscale -1.0 $center] {n}'
     f'source /Users/kyoun/IC/sculptor.tcl {n}'
     f'::Sculptor::sculpt \"{path}\" {n}'
+    f'set center [measure center $sel weight none] {n}'
+    f'$sel moveby [vecscale -1.0 $center] {n}'
     f'topo writelammpsdata /Users/kyoun/IC/estruturas/data/$fdata full {n}'
     f'$sel writepdb /Users/kyoun/IC/estruturas/pdb/$fname {n}'
     )
