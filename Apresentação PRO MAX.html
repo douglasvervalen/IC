@@ -104,6 +104,15 @@
                         </div>
                     </div>
                 </div>
+                <!-- Gráfico de Abs com contêiner de altura fixa -->
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                            <h3 class="font-bold text-slate-700">Absenteísmo (%)</h3>
+                            <div class="relative h-64">
+                                <canvas id="absChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+            </div>
             </section>
             <!-- Slide 4: Diagnóstico -->
             <section id="slide-4" class="slide h-full">
@@ -281,6 +290,7 @@
         const labels = ['Set', 'Out', 'Nov', 'Dez', 'Jan', 'Fev'];
         const produtividadeData = [102.25, 101.75, 99.81, 95.75, 95.38, 94.19];
         const qualidadeData = [89.13, 88.63, 90.69, 86.81, 86.06, 83.94];
+        const absData = [0.06, 0.25, 0.44, 1.44, 1.38, 2.31];
         
         // Dados dos colaboradores para o slide interativo
         const collaborators = [
@@ -409,6 +419,23 @@
             });
             chartsRendered = true; // Marca os gráficos como renderizados
         };
+
+        // Gráfico de Absenteísmo 
+            const prodCtx = document.getElementById('absChart').getContext('2d');
+            new Chart(prodCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'abs',
+                        data: absData,
+                        borderColor: 'rgb(59, 130, 246)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        fill: true,
+                    }]
+                },
+                options: chartOptions
+            });
 
         /**
          * Popula a lista interativa de colaboradores no slide 7.
