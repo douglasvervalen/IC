@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apresentação: Plano de Ação</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+    <!-- Chart.js para Gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Estilo base para a página e fontes */
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        /* Estilo para cada slide da apresentação */
+        .slide {
+            display: none; /* Esconde todos os slides por padrão */
+        }
+        /* Mostra apenas o slide ativo */
+        .slide.active {
+            display: block;
+        }
+        /* Animação de fade-in para transição suave */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Estilo para os botões de navegação */
+        .nav-button {
+            transition: all 0.2s ease-in-out;
+        }
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+        /* Estilo para o item de colaborador ativo */
+        .collaborator-item.active {
+            background-color: #3b82f6; /* bg-blue-500 */
+            color: white;
+            transform: translateX(5px);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 flex flex-col items-center justify-center min-h-screen p-4 overflow-hidden">
+    <!-- Container principal da apresentação -->
+    <div id="presentation-container" class="w-full max-w-6xl h-[80vh] max-h-[700px] bg-white rounded-2xl shadow-2xl flex flex-col relative overflow-hidden">
+        <!-- Conteúdo dos Slides -->
+        <main class="flex-grow p-6 md:p-12 overflow-y-auto">
+            <!-- Slide 1: Título -->
+            <section id="slide-1" class="slide active flex flex-col items-center justify-center h-full text-center">
+                <div class="fade-in">
+                    <span class="text-blue-600 font-bold text-lg md:text-xl">PLANO DE AÇÃO</span>
+                    <h1 class="text-4xl md:text-6xl font-black text-slate-800 mt-2">Reversão de Indicadores</h1>
+                    <p class="text-2xl md:text-3xl font-light text-slate-600 mt-4"></p>
+                </div>
+            </section>
+            <!-- Slide 2: Tópicos -->
+            <section id="slide-2" class="slide h-full">
+                <div class="fade-in">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2 mb-8">Tópicos</h2>
+                    <ul class="space-y-4 text-xl md:text-2xl text-slate-700">
+                        <li class="flex items-start"><span class="text-blue-500 font-bold mr-3">1.</span> Análise do Cenário Atual</li>
+                        <li class="flex items-start"><span class="text-blue-500 font-bold mr-3">2.</span> Diagnóstico das Causas Raízes</li>
+                        <li class="flex items-start"><span class="text-blue-500 font-bold mr-3">3.</span> Os 4 Pilares do Plano de Ação</li>
+                        <li class="flex items-start"><span class="text-blue-500 font-bold mr-3">4.</span> Ações Estratégicas (Gerais e Individuais)</li>
+                        <li class="flex items-start"><span class="text-blue-500 font-bold mr-3">5.</span> Cronograma e Acompanhamento</li>
+                        <li class="flex items-start"><span class="text-blue-500 font-bold mr-3">6.</span> Resultados Esperados</li>
+                    </ul>
+                </div>
+            </section>
+            <!-- Slide 3: Análise do Cenário -->
+            <section id="slide-3" class="slide h-full">
+                <div class="fade-in">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2 mb-6">Análise do Cenário Atual</h2>
+                    <p class="text-slate-600 mb-6">Nossos indicadores dos últimos 6 meses demonstram uma tendência de queda que precisa de atenção imediata.</p>
+                    <div class="grid grid-cols-1 gap-6">
+                        <!-- Gráfico de Produtividade com contêiner de altura fixa -->
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                            <h3 class="font-bold text-slate-700">Produtividade Geral (%)</h3>
+                            <div class="relative h-64">
+                                <canvas id="produtividadeChart"></canvas>
+                            </div>
+                        </div>
+                        <!-- Gráfico de Qualidade com contêiner de altura fixa -->
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                            <h3 class="font-bold text-slate-700">Qualidade (%)</h3>
+                            <div class="relative h-64">
+                                <canvas id="qualidadeChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Slide 4: Diagnóstico -->
+            <section id="slide-4" class="slide h-full">
+                <div class="fade-in">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2 mb-8">Diagnóstico das Causas Raízes</h2>
+                    <div class="space-y-6">
+                        <div class="flex items-start p-4 bg-slate-50 rounded-lg">
+                            <svg class="w-8 h-8 text-blue-500 mr-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                            <div>
+                                <h3 class="font-bold text-lg text-slate-800">Comunicação e Feedback</h3>
+                                <p class="text-slate-600">Falta de clareza sobre desempenho e percepção de poucas oportunidades de carreira.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start p-4 bg-slate-50 rounded-lg">
+                            <svg class="w-8 h-8 text-blue-500 mr-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <div>
+                                <h3 class="font-bold text-lg text-slate-800">Motivação e Engajamento</h3>
+                                <p class="text-slate-600">Desgaste de colaboradores-chave, desmotivação e percepção de injustiça.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start p-4 bg-slate-50 rounded-lg">
+                            <svg class="w-8 h-8 text-blue-500 mr-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                            <div>
+                                <h3 class="font-bold text-lg text-slate-800">Capacitação e Ferramentas</h3>
+                                <p class="text-slate-600">Dificuldades técnicas e de adaptação a sistemas e processos.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start p-4 bg-slate-50 rounded-lg">
+                            <svg class="w-8 h-8 text-blue-500 mr-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                            <div>
+                                <h3 class="font-bold text-lg text-slate-800">Clima e Relacionamento</h3>
+                                <p class="text-slate-600">Conflitos, competição não saudável e conversas paralelas que impactam o foco.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Slide 5: Pilares -->
+            <section id="slide-5" class="slide h-full">
+                <div class="fade-in">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2 mb-8">4 Pilares do Plano de Ação</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-blue-500 text-white p-6 rounded-lg shadow-lg">
+                            <h3 class="font-bold text-2xl">1. Diagnóstico e Comunicação</h3>
+                            <p class="mt-2">Entender a fundo e conversar abertamente.</p>
+                        </div>
+                        <div class="bg-blue-600 text-white p-6 rounded-lg shadow-lg">
+                            <h3 class="font-bold text-2xl">2. Desenvolvimento Individualizado</h3>
+                            <p class="mt-2">Reconhecer que cada colaborador é único.</p>
+                        </div>
+                        <div class="bg-blue-700 text-white p-6 rounded-lg shadow-lg">
+                            <h3 class="font-bold text-2xl">3. Fortalecimento da Cultura</h3>
+                            <p class="mt-2">Promover colaboração em vez de competição.</p>
+                        </div>
+                        <div class="bg-blue-800 text-white p-6 rounded-lg shadow-lg">
+                            <h3 class="font-bold text-2xl">4. Gestão Focada em Dados</h3>
+                            <p class="mt-2">Usar métricas para guiar ações humanas.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Slide 6: Ações Gerais -->
+            <section id="slide-6" class="slide h-full">
+                <div class="fade-in">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2 mb-8">Iniciativas para a Equipe</h2>
+                    <ul class="space-y-4 text-lg md:text-xl text-slate-700">
+                        <li class="flex items-center"><span class="text-blue-500 font-bold mr-4 text-2xl">🚀</span> <strong>Reunião Inicial:</strong> Apresentar o plano e convocar a equipe.</li>
+                        <li class="flex items-center"><span class="text-blue-500 font-bold mr-4 text-2xl">🎯</span> <strong>Metas Claras (Individuais e Coletivas):</strong> Destrinchar as metas.</li>
+                        <li class="flex items-center"><span class="text-blue-500 font-bold mr-4 text-2xl">🗓</span> <strong>Reuniões de alinhamento:</strong> Reuniões diárias de 15 min para alinhamento rápido.</li>
+                        <li class="flex items-center"><span class="text-blue-500 font-bold mr-4 text-2xl">🏆</span> <strong>Mural da Qualidade e Reconhecimento:</strong> Destacar melhores práticas e vitórias.</li>
+                    </ul>
+                </div>
+            </section>
+            <!-- Slide 7: Ações Individuais (Interativo) -->
+            <section id="slide-7" class="slide h-full">
+                <div class="fade-in flex flex-col h-full">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2 mb-6 shrink-0">Ações de Liderança Individualizadas</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 flex-grow min-h-0">
+                        <!-- Lista de Colaboradores -->
+                        <div id="collaborator-list" class="md:col-span-1 bg-slate-50 rounded-lg p-2 overflow-y-auto">
+                            <!-- JS vai popular esta lista -->
+                        </div>
+                        <!-- Detalhes do Colaborador -->
+                        <div id="collaborator-details" class="md:col-span-2 bg-slate-100 rounded-lg p-6 flex items-center justify-center">
+                            <p class="text-slate-500 text-center">Selecione um colaborador para ver o plano de ação.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Slide 8: Cronograma -->
+            <section id="slide-8" class="slide h-full">
+                <div class="fade-in">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2 mb-8">Cronograma 30-60-90 Dias</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-slate-50 p-6 rounded-lg border-l-4 border-blue-400">
+                            <h3 class="font-bold text-xl text-blue-500">30 Dias</h3>
+                            <p class="font-semibold text-slate-800 mt-1">Diagnóstico e Alinhamento</p>
+                            <ul class="list-disc list-inside mt-2 text-slate-600 space-y-1">
+                                <li>Sessões Individuais</li>
+                                <li>Reunião Inicial</li>
+                                <li>Lançar Mural</li>
+                                <li>Definir Metas</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-50 p-6 rounded-lg border-l-4 border-blue-500">
+                            <h3 class="font-bold text-xl text-blue-600">60 Dias</h3>
+                            <p class="font-semibold text-slate-800 mt-1">Implementação e Monitoramento</p>
+                            <ul class="list-disc list-inside mt-2 text-slate-600 space-y-1">
+                                <li>Treinamentos</li>
+                                <li>Acompanhamento semanal</li>
+                                <li>Ajustar plano</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-50 p-6 rounded-lg border-l-4 border-blue-600">
+                            <h3 class="font-bold text-xl text-blue-700">90 Dias</h3>
+                            <p class="font-semibold text-slate-800 mt-1">Consolidação e Celebração</p>
+                            <ul class="list-disc list-inside mt-2 text-slate-600 space-y-1">
+                                <li>Análise de impacto</li>
+                                <li>Reconhecimento formal</li>
+                                <li>Celebrar conquistas</li>
+                                <li>Planejar próximo ciclo</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Slide 9: Resultados Esperados -->
+            <section id="slide-9" class="slide h-full">
+                <div class="fade-in">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800 border-b-4 border-blue-500 pb-2 mb-8">Resultados Esperados</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                        <div class="bg-blue-50 p-6 rounded-lg">
+                            <div class="text-5xl">📈</div>
+                            <p class="font-bold text-blue-800 text-3xl mt-2">+8%</p>
+                            <p class="text-slate-600 mt-1">Produtividade</p>
+                        </div>
+                        <div class="bg-blue-50 p-6 rounded-lg">
+                            <div class="text-5xl">✔️</div>
+                            <p class="font-bold text-blue-800 text-3xl mt-2">90%</p>
+                            <p class="text-slate-600 mt-1">Qualidade</p>
+                        </div>
+                        <div class="bg-blue-50 p-6 rounded-lg">
+                            <div class="text-5xl">🎯</div>
+                            <p class="font-bold text-blue-800 text-3xl mt-2">+40%</p>
+                            <p class="text-slate-600 mt-1">Colaboradores na meta</p>
+                        </div>
+                        <div class="bg-blue-50 p-6 rounded-lg">
+                            <div class="text-5xl">📉</div>
+                            <p class="font-bold text-blue-800 text-3xl mt-2">-20%</p>
+                            <p class="text-slate-600 mt-1">Absenteísmo</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <!-- Navegação e Paginação -->
+        <footer class="flex items-center justify-between p-4 bg-slate-50 border-t border-slate-200">
+            <button id="prev-btn" class="nav-button bg-slate-700 text-white py-2 px-5 rounded-lg shadow-md hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed">Anterior</button>
+            <div id="pagination" class="text-slate-600 font-semibold"></div>
+            <button id="next-btn" class="nav-button bg-blue-600 text-white py-2 px-5 rounded-lg shadow-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed">Próximo</button>
+        </footer>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- VARIÁVEIS DE CONTROLE ---
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const pagination = document.getElementById('pagination');
+        let currentSlide = 0;
+
+        // --- DADOS DOS GRÁFICOS E COLABORADORES ---
+        // Dados para os gráficos, extraídos dos PDFs
+        const labels = ['Set', 'Out', 'Nov', 'Dez', 'Jan', 'Fev'];
+        const produtividadeData = [102.25, 101.75, 99.81, 95.75, 95.38, 94.19];
+        const qualidadeData = [89.13, 88.63, 90.69, 86.81, 86.06, 83.94];
+        
+        // Dados dos colaboradores para o slide interativo
+        const collaborators = [
+            { name: 'Donald', profile: 'Técnico, crítico, influente.', action: 'Envolvê-lo como <strong>ponto focal técnico</strong> na revisão de um processo. Oferecer coaching para gestão de conflitos, mostrando como sua expertise pode alavancá-lo para a gestão que tanto deseja.' },
+            { name: 'Cinderela', profile: 'Deseja crescer, tímida.', action: 'Criar um <strong>Plano de Desenvolvimento Individual (PDI)</strong> focado em comunicação. Designar um mentor (Sara) e dar a ela pequenas tarefas de apresentação para a equipe.' },
+            { name: 'Bob Esponja', profile: 'Social, mas disperso.', action: 'Canalizar sua energia social. Torná-lo responsável pelo <strong>"Comitê de Engajamento"</strong>, organizando eventos rápidos que não atrapalhem o foco. Feedbacks constantes sobre foco.' },
+            { name: 'Mickey & Minnie', profile: 'Desmotivados pela percepção de "carta marcada".', action: '<strong>Conversa franca e individual</strong> sobre carreira. Apresentar o plano de carreira da empresa de forma clara e criar um PDI com metas realistas para que eles se sintam no controle de seu crescimento.' },
+            { name: 'Wolverine', profile: 'Esforçado, com limitações técnicas e emocionais.', action: 'Oferecer <strong>apoio integral</strong>, conectando-o ao RH para suporte emocional. Realizar treinamentos técnicos individualizados e com paciência. Focar em celebrar seu esforço e pequenas melhorias.' },
+            { name: 'She-ra & Xena', profile: 'Competitivas e individualistas.', action: '<strong>Sessão de alinhamento de expectativas</strong> sobre colaboração. Criar uma meta de equipe que exija que as duas trabalhem juntas para ser alcançada, transformando competição em cooperação.' },
+            { name: 'Patolino', profile: 'Porta-voz das demandas da equipe.', action: 'Reconhecer sua liderança informal. Agendá-lo como o <strong>representante oficial da equipe</strong> em reuniões periódicas para discutir melhorias, validando seu papel de forma construtiva.'},
+            { name: 'Pernalonga', profile: 'Ex-braço direito, agora cansado.', action: 'Reconhecer seu esforço passado. Oferecer um <strong>projeto especial com prazo definido</strong> que o re-motive, e depois discutir um rodízio de responsabilidades para evitar sobrecarga.'}
+        ];
+
+        // --- FUNÇÕES ---
+        /**
+         * Atualiza a exibição para mostrar o slide correto.
+         */
+        const showSlide = (index) => {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active', 'fade-in');
+                if (i === index) {
+                    slide.classList.add('active');
+                    // Adicionar a classe de animação após um pequeno atraso para garantir que o display:block seja aplicado primeiro
+                    setTimeout(() => slide.classList.add('fade-in'), 10);
+                }
+            });
+            // Atualiza o estado da paginação e dos botões
+            pagination.textContent = `${index + 1} / ${slides.length}`;
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === slides.length - 1;
+
+            // Renderiza os gráficos apenas quando o slide 3 estiver visível
+            if (index === 2) {
+                renderCharts();
+            }
+            // Popula a lista de colaboradores quando o slide 7 estiver visível
+            if (index === 6) {
+                populateCollaboratorList();
+            }
+        };
+
+        /**
+         * Navega para o próximo slide.
+         */
+        const nextSlide = () => {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        };
+
+        /**
+         * Navega para o slide anterior.
+         */
+        const prevSlide = () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        };
+
+        let chartsRendered = false; // Flag para garantir que os gráficos sejam renderizados apenas uma vez
+        /**
+         * Renderiza os gráficos de Produtividade e Qualidade.
+         */
+        const renderCharts = () => {
+            if (chartsRendered) return; // Se já foram renderizados, não faz nada
+
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%'
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                elements: {
+                    line: {
+                        tension: 0.3
+                    }
+                }
+            };
+
+            // Gráfico de Produtividade
+            const prodCtx = document.getElementById('produtividadeChart').getContext('2d');
+            new Chart(prodCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Produtividade',
+                        data: produtividadeData,
+                        borderColor: 'rgb(59, 130, 246)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        fill: true,
+                    }]
+                },
+                options: chartOptions
+            });
+
+            // Gráfico de Qualidade
+            const qualCtx = document.getElementById('qualidadeChart').getContext('2d');
+            new Chart(qualCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Qualidade',
+                        data: qualidadeData,
+                        borderColor: 'rgb(239, 68, 68)',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        fill: true,
+                    }]
+                },
+                options: chartOptions
+            });
+            chartsRendered = true; // Marca os gráficos como renderizados
+        };
+
+        /**
+         * Popula a lista interativa de colaboradores no slide 7.
+         */
+        const populateCollaboratorList = () => {
+            const listContainer = document.getElementById('collaborator-list');
+            const detailsContainer = document.getElementById('collaborator-details');
+            if(listContainer.children.length > 0) return; // Popula apenas uma vez
+
+            collaborators.forEach((col, index) => {
+                const item = document.createElement('div');
+                item.className = 'collaborator-item p-4 rounded-md cursor-pointer hover:bg-slate-200 transition-all duration-200';
+                item.textContent = col.name;
+                item.dataset.index = index;
+                listContainer.appendChild(item);
+
+                item.addEventListener('click', () => {
+                    // Remove a classe 'active' de todos os outros itens
+                    document.querySelectorAll('.collaborator-item').forEach(el => el.classList.remove('active'));
+                    // Adiciona a classe 'active' ao item clicado
+                    item.classList.add('active');
+
+                    const selectedCol = collaborators[index];
+                    detailsContainer.innerHTML = `
+                        <div class="text-left w-full fade-in">
+                            <h3 class="font-bold text-2xl text-slate-800">${selectedCol.name}</h3>
+                            <p class="text-slate-500 italic mt-1 mb-4">${selectedCol.profile}</p>
+                            <div class="bg-white p-4 rounded-md shadow">
+                                <h4 class="font-semibold text-blue-600">Ação de Liderança Proposta:</h4>
+                                <p class="text-slate-700 mt-2">${selectedCol.action}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+        };
+
+        // --- EVENT LISTENERS ---
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+        // Navegação pelo teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+
+        // --- INICIALIZAÇÃO ---
+        showSlide(currentSlide);
+    });
+    </script>
+</body>
+</html>
+
